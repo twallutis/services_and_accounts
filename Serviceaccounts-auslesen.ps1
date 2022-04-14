@@ -33,8 +33,7 @@ $fileexists = $False
 #
 # Es erfolgt eine Abfrage des Pfades zur Liste der zur prüfenden Server
 # Der übergebene Pfad wird auf Existenz geprüft.
-# $systemlist = Read-Host "Bitte geben Sie den vollständigen Pfad zur Liste der Systeme ein:"
-$systemlist = get-item "c:\temp\liste.txt"
+$systemlist = Read-Host "Bitte geben Sie den vollständigen Pfad zur Liste der Systeme ein:"
 #
 # Die zu prüfenden Systeme werden aus einer Datei ausgelesen.
 # In der aktuellen Version des Skriptes muss der Pfad händisch eingetragen werden.
@@ -44,7 +43,7 @@ if ($listexists){
     $serverlist = Get-Content $systemlist
      }
 else {
-    echo ("Eingabedatei existiert nicht am angegebenen Ort. Bitte den korrekten Pfad angeben. Das Skript beendet sich jetzt.")
+    Write-Output ("Eingabedatei existiert nicht am angegebenen Ort. Bitte den korrekten Pfad angeben. Das Skript beendet sich jetzt.")
     break
 }
 #
@@ -54,27 +53,21 @@ else {
 #
 foreach($server in $serverlist){
     $filename = $server + '.txt'
-    $serviceslist = Get-WmiObject -computername $server Win32_Service
-    
-    # Hier liegt der Fehler
-    $serviceproperties = Select-Object -Property * -InputObject $serviceslist
-    echo "Liste der Serviceeigenschaften" + $serviceproperties
-    $services = $serviceproperties |  Where-Object{($_.StartName -notlike $intuser_a -and $_.StartName -notlike $intuser_b) -and $_.StartName -notlike $intuser_c -and $_.StartName -notlike $intuser_d}   
-    $filteredlist = ($services | Format-List name, displayname, startname)
-    # $services = (Get-WmiObject -computername $server Win32_Service | select-object -Property  * | Where-Object{($_.StartName -notlike $intuser_a -and $_.StartName -notlike $intuser_b) -and $_.StartName -notlike $intuser_c -and $_.StartName -notlike $intuser_d}   | Format-List name, displayname, startname)
-    echo "Gefilterte Liste" + $filteredlist
+    $serviceslist = Get-CimInstance -ComputerName $server -ClassName Win32_Service 
+    $filteredlist = $serviceslist | Where-Object{($_.StartName -notlike $intuser_a -and $_.StartName -notlike $intuser_b) -and $_.StartName -notlike $intuser_c -and $_.StartName -notlike $intuser_d}
+    $filteredlistoutput = ($filteredlist | Format-List name, displayname, startname)
     $fileexists = Test-Path -Path C:\Temp\$filename -PathType Leaf
     If ($fileexists){
-        echo "Die Ergebnisdatei ist bereits vorhanden. Die Daten werden angehängt."
+        Write-Output "Die Ergebnisdatei ist bereits vorhanden. Die Daten werden angehängt."
         $curdate = Get-Date
-        Add-Content -Path $filename -Value $curdate
-        Add-Content -Path $filename -Value $filteredlist
+        Add-Content -Path c:\temp\$filename -Value $curdate
+        Add-Content -Path c:\temp\$filename -Value ($filteredlistoutput | Out-String) 
         }
     else{
-        echo "Die Ergebnisdatei existiert noch nicht. Sie wird neu neu angelegt."
+        Write-Output "Die Ergebnisdatei existiert noch nicht. Sie wird neu neu angelegt."
         $curdate = Get-Date 
         New-Item -Path C:\temp\$filename
-        Set-Content -Path $filename -Value $curdate
-        Add-Content -Path $filename -Value $filteredlist
+        Set-Content -Path c:\temp\$filename -Value $curdate
+        Add-Content -Path c:\temp\$filename -Value ($filteredlistoutput | Out-String)
         }
 }
