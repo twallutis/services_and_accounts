@@ -1,7 +1,7 @@
 ﻿# Autor: Thomas Wallutis
 # Erstellungsdatum: 31.03.2022
-# Letzte Änderung: 31.03.2022
-# Lizenz: frei zur internen Verwendung
+# Letzte Änderung: 14.04.2022
+# Lizenz: GPL 2.0
 #
 # ToDos:
 # Übergabe der Eingabedatei als Parameter
