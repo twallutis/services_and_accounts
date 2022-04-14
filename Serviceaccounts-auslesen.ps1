@@ -2,16 +2,26 @@
 # Erstellungsdatum: 31.03.2022
 # Letzte Änderung: 14.04.2022
 # Lizenz: GPL 2.0
-#
-# ToDos:
-# Übergabe der Eingabedatei als Parameter
-# Ausgabe in Datei 
-# Abfangen von fehlerhaften Eingaben
-# Abfangen von nicht erreichbaren Systemen
-#
-# Aus einer Datei die Servernamen bzw. IP-Adressen auslesen
-# Die Datei enthält einen Eintrag pro Zeile
-# Achtung! Eine Prüfung findet nicht statt!
+<#
+.SYNOPSIS
+    Dienste aus Windows-Systemen auslesen und dazugehörige Benutzerkonten ausgeben. 
+.DESCRIPTION
+    Das Skript liest eine Liste von Windows-Systemen ein. Bei jedem System werden dann die Dienste abgefragt. 
+    Es werden die Dienste zurückgegeben, die unter einem Benutzerkonto laufen. Die Ausgabe wird pro System
+    in eine eigene Datei geschrieben.
+.PARAMETER
+.EXAMPLE
+.EXAMPLE
+.EXAMPLE
+.NOTES
+    Verwendung auf eigene Gefahr!
+    ToDos:
+    Übergabe der Eingabedatei als Parameter
+    Abfangen von fehlerhaften Eingaben
+    Abfangen von nicht erreichbaren Systemen
+.LINK
+    github.com/twallutis/services_and_accounts
+#>
 #
 $intuser_a = "NT AUTHORITY\LocalService"
 $intuser_b = "localSystem"
