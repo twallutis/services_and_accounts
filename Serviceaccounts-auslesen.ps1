@@ -21,15 +21,19 @@ $intuser_d = ""
 $listexists = $False
 $fileexists = $False 
 #
+# Es erfolgt eine Abfrage des Pfades zur Liste der zur prüfenden Server
+# Der übergebene Pfad wird auf Existenz geprüft.
+$systemlist = Read-Host "Bitte geben Sie den vollständigen Pfad zur Liste der Systeme ein:"
+#
 # Die zu prüfenden Systeme werden aus einer Datei ausgelesen.
 # In der aktuellen Version des Skriptes muss der Pfad händisch eingetragen werden.
 # Es wird geprüft, ob die Datei vorhanden ist
-$listexists = Test-Path -Path C:\Temp\liste.txt -PathType Leaf
+$listexists = Test-Path -Path $systemlist -PathType Leaf
 if ($listexists){
-    $serverlist = Get-Content "C:\Temp\liste.txt"
+    $serverlist = Get-Content $systemlist
      }
 else {
-    echo ("Eingabedatei existiert nicht am angegebenen Ort. Bitte im Kopf des Skriptes die korrekte Datei angeben.")
+    echo ("Eingabedatei existiert nicht am angegebenen Ort. Bitte den korrekten Pfad angeben. Das Skript beendet sich jetzt.")
     break
 }
 #
