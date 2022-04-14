@@ -54,7 +54,7 @@ else {
 foreach($server in $serverlist){
 $filename = $server + '.txt'
 # $services = Get-WmiObject Win32_Service  | select-object -Property  * | Where-Object{($_.StartName -notlike "NT AUTHORITY\LocalService" -and $_.StartName -notlike "localSystem") -and $_.StartName -notlike "NT AUTHORITY\NetworkService" -and $_.StartName -notlike ""}   | Format-List name, displayname, startname
-$services = Get-WmiObject Win32_Service  | select-object -Property  * | Where-Object{($_.StartName -notlike $intuser_a -and $_.StartName -notlike $intuser_b) -and $_.StartName -notlike $intuser_c -and $_.StartName -notlike $intuser_d}   | Format-List name, displayname, startname
+$services = Get-WmiObject -computername $server Win32_Service | select-object -Property  * | Where-Object{($_.StartName -notlike $intuser_a -and $_.StartName -notlike $intuser_b) -and $_.StartName -notlike $intuser_c -and $_.StartName -notlike $intuser_d}   | Format-List name, displayname, startname
 $fileexists = Test-Path -Path C:\Temp\$filename -PathType Leaf
 # echo $fileexists
 If ($fileexists){
